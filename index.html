@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>अवलोकन: मुख्य संदर्भ सूचकांक</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light background */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .main-container {
+            max-width: 600px;
+            width: 95%;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .concept-link {
+            display: block;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-radius: 12px;
+            background-color: #e0f2fe; /* Light blue */
+            border: 2px solid #90cdf4;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #1e40af; /* Dark blue text */
+        }
+        .concept-link:hover {
+            background-color: #bae6fd; /* Lighter blue on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+        }
+        .link-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+        .link-subtitle {
+            font-size: 0.9rem;
+            color: #4b5563;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-6 border-b-4 border-blue-500 pb-3">
+        मूलभूत तत्वों का अवलोकन
+    </h1>
+    <p class="text-center text-gray-600 mb-8">
+        अपनी समझ की यात्रा शुरू करने के लिए नीचे दिए गए संदर्भों में से किसी एक को चुनें।
+    </p>
+
+    <!-- Link 1: Sukh Ki Khoj (First Reference) -->
+    <a href="first_ref.html" class="concept-link">
+        <div class="link-title">पहला संदर्भ: मूल चाहत की समानता</div>
+        <div class="link-subtitle">सुख की खोज और सार्वभौमिक नियम</div>
+    </a>
+
+    <!-- Link 2: Jeevan ka Swaroop (Second Reference) -->
+    <a href="second_ref.html" class="concept-link">
+        <div class="link-title">दूसरा संदर्भ: चाहने वाले को पहचानना</div>
+        <div class="link-subtitle">जीवन और शरीर की बनावट, आवश्यकता और क्रियाओं में भिन्नता</div>
+    </a>
+</div>
+
+</body>
+</html>

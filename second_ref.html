@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>जीवन का स्वरूप: कार्ड प्रस्तुति</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .header-link {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card-content h1 {
+            color: #1e40af; /* Blue title */
+            border-bottom: 2px solid #93c5fd;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .card-content h2 {
+            color: #4b5563; /* Gray subtitle */
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        .reflection-question {
+            background-color: #eff6ff; /* Light blue for questions */
+            border-left: 4px solid #3b82f6;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+        .card-enter {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        .card-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+<a href="main_index.html" class="header-link">← सूचकांक पर वापस</a>
+
+<div class="max-w-xl w-full">
+    <!-- Main Card Container -->
+    <div id="card-container" class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 min-h-[400px] flex flex-col justify-between">
+        <div id="card-content" class="card-enter">
+            <!-- Content will be injected here -->
+        </div>
+
+        <!-- Navigation and Indicator -->
+        <div class="mt-8 pt-4 border-t border-gray-200 flex justify-between items-center">
+            <button id="prev-btn" onclick="prevCard()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg shadow hover:bg-gray-400 disabled:opacity-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+                &larr; पिछला
+            </button>
+            <span id="card-indicator" class="text-sm font-medium text-gray-600">
+                1/8
+            </span>
+            <button id="next-btn" onclick="nextCard()" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 disabled:opacity-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                अगला &rarr;
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Data derived from the "दूसरा संदर्भ: चाहने वाले को पहचानना (जीवन का स्वरूप)"
+    const cardData = [
+        // 1. Introduction & The Fundamental Question
+        {
+            title: "मेरे भीतर चाहने वाला कौन है?",
+            content: "हम सभी की मूल चाहत समान हैं—सफलता, सम्मान, शांति। पर यह चाह किसकी है? हाथ की, पैर की, दिल की या दिमाग की?",
+            focus: "प्रस्ताव: शरीर से भिन्न एक चैतन्य वस्तु है जो निरंतर सुख की चाहत का स्रोत है—इसे 'जीवन' (मैं) कहते हैं।",
+            questions: [
+                "जब व्यक्ति सो रहा होता है, पर कोई उसका नाम लेता है, तो नाम को पहचानने वाला कौन है?",
+                "समान मूल चाहत रखने वाली वस्तु भी समान होनी चाहिए, लेकिन शरीर की बनावट तो अलग अलग होती है।"
+            ]
+        },
+        // 2. Jeevan & Sharir - The Joint Structure
+        {
+            title: "प्रस्ताव: जीवन और शरीर: संयुक्त स्वरूप",
+            content: "प्रत्येक मानव जीवन (चैतन्य इकाई) और शरीर (जड़ इकाई) का एक संयुक्त स्वरूप है। जीवन मेधस (मस्तिष्क) के माध्यम से शरीर को चलाता है।",
+            focus: "उदाहरण: शरीर साधन है (वाहन); जीवन चालक है (दिशा तय करने वाला)।",
+            questions: [
+                "जब हम कहते हैं “मेरा शरीर दर्द कर रहा है”, तो 'मेरा' कौन है?",
+                "मेरा शरीर सुखी-दुखी होता है या मैं (जीवन)?"
+            ]
+        },
+        // 3. Difference 1: Structure/Composition (बनावट)
+        {
+            title: "अंतर 1: बनावट में भिन्नता",
+            content: "जीवन और शरीर की मौलिक संरचना या बनावट में भिन्नता हैं।",
+            focus: {
+                type: "comparison",
+                items: [
+                    { label: "जीवन (चैतन्य प्रकृति)", details: ["मूल स्वरूप: गठनपूर्ण परमाणु, चैतन्य इकाई।", "नश्वरता: अमर, गुणात्मक परिवर्तन होता है।", "थकान: थकता नहीं है, ऊर्जा असीम।", "पहचान: न गोरा, न काला, न स्त्री, न पुरुष हूँ।"] },
+                    { label: "शरीर (जड़ प्रकृति)", details: ["मूल स्वरूप: प्राणकोषाओं से रचित भौतिक-रासायनिक रचना।", "नश्वरता: नश्वर, मात्रात्मक परिवर्तन होता है।", "थकान: थकता है, विश्राम (नींद) की जरूरत।", "पहचान: गोरा, काला, स्त्री या पुरुष होता है।"] }
+                ]
+            },
+            questions: [
+                "क्या हम स्वयं को शरीर के आधार पर ही पहचानते हैं? क्या मैं स्वयं को स्त्री-पुरुष से परे देख पाता हूँ?"
+            ]
+        },
+        // 4. Difference 2: Needs/Requirement (आवश्यकता)
+        {
+            title: "अंतर 2: आवश्यकता में भिन्नता",
+            content: "आवश्यकताओं में भिन्नता जीवन और शरीर की प्रकृति को स्पष्ट करती हैं।",
+            focus: {
+                type: "comparison",
+                items: [
+                    { label: "जीवन की आवश्यकता (गुणात्मक)", details: ["उदाहरण: सुख, शांति, विश्वास, सम्मान, आनंद।", "स्वरूप: असीमित, गुणात्मक (मापा नहीं जा सकता)।", "समय-सीमा: निरंतर, स्थायी।", "पूर्ति: ज्ञान और सही समझ।"] },
+                    { label: "शरीर की आवश्यकता (भौतिक)", details: ["उदाहरण: रोटी, कपड़ा, मकान, चिकित्सा, कार, फोन।", "स्वरूप: सीमित, मात्रात्मक (मापा जा सकता है)।", "समय-सीमा: क्षणिक, अस्थायी।", "पूर्ति: भौतिक वस्तुओं का सही उपयोग।"] }
+                ]
+            },
+            questions: [
+                "क्या हम ये महसूस कर पाते हैं कि पैसे या सुविधाएँ बढ़ने से मन की शांति बढ़े यह जरूरी नहीं?",
+                "क्या हम अक्सर 'सुविधा से सुख' और 'सामान से सम्मान' पाने की कोशिश नहीं करते?"
+            ]
+        },
+        // 5. Difference 3: Actions (क्रियाएँ)
+        {
+            title: "अंतर 3: क्रियाओं में भिन्नता",
+            content: "जीवन की क्रियाएँ कल्पनाशीलता और संज्ञानशीलता हैं, जबकि शरीर की क्रियाएँ स्वतः और ऐच्छिक रूप में है।",
+            focus: {
+                type: "comparison",
+                items: [
+                    { label: "जीवन की क्रियाएँ", details: ["उदाहरण: सोचना, समझना, इच्छा करना, चयन करना।", "आधार: जागृत होने पर ज्ञान; भ्रमित होने पर मान्यताएँ।", "नियंत्रण: मैं (जीवन) द्वारा नियंत्रित।"] },
+                    { label: "शरीर की क्रियाएँ", details: ["उदाहरण: पाचन, रक्त संचार, चलना, बोलना।", "आधार: भौतिक-रासायनिक प्रक्रियाएँ।", "नियंत्रण: स्वचालित या जीवन के नियंत्रण से।"] }
+                ]
+            },
+            questions: [
+                "जब कोई निर्णय को लेकर असमंजस में होते हैं—क्या वह शरीर की उलझन है या मन की?",
+                "जिस प्रकार हम बच्चों को सही तरीके से चलना सिखा पाते हैं क्या उसी तरह सही सोचना या इच्छा करना सिखाना संभव है?"
+            ]
+        },
+        // 6. Current Confusion (वर्तमान भ्रम)
+        {
+            title: "वर्तमान भ्रम: सुविधा संग्रह और तृप्ति",
+            content: "भ्रमित अवस्था में मानव सुविधा संग्रह (सुविधा, धन, भोग) को ही अपना लक्ष्य मान लेता है, जबकि सुविधा संग्रह का कोई तृप्ति बिंदु नहीं होता।",
+            focus: "पैसा और पद जीवित रहने (जिंदा रहना) के साधन हैं, लेकिन वे सही जीने की आवश्यकता (सुख) को छू नहीं सकते।",
+            questions: [
+                "यदि कोई बहुत धन कमा ले, लेकिन संबंधों में स्नेह न मिले, तो क्या वह सुखी हो सकता है?",
+                "समझदारी से 'समाधान' प्राप्त होता है और श्रम से 'सुविधा'। सुविधा और समाधान दोनों ही मानव की आवश्यकता है।"
+            ]
+        },
+        // 7. Jeevan's Actions Detail (तुलन)
+        {
+            title: "जीवन की क्रियाएँ: तुलन का आधार",
+            content: "जीवन ही जानना और मानना का कार्य करता है। जीवन की क्रियाओं में 'तुलन' (evaluation) सबसे महत्वपूर्ण है।",
+            focus: "भ्रमित व्यक्ति 'प्रिय, हित, लाभ' के आधार पर तुलना करता है; जागृत व्यक्ति 'न्याय, धर्म, सत्य' के आधार पर तुलना करता है।",
+            questions: [
+                "परिवार में सभी का प्रिय और लाभ दृष्टिकोण अलग अलग होता है, इसीलिए छोटी छोटी बातें भी आपसी मतभेद का बड़ा कारण हो जाती हैं।",
+                "मानव मानव के बीच व्यवहार का नियम ही न्याय कहलाता है।"
+            ]
+        },
+        // 8. The Key to Balance (संतुलन की कुंजी)
+        {
+            title: "निष्कर्ष: संतुलन की कुंजी",
+            content: "जब जीवन स्पष्ट होता है, तो शरीर के उपयोग में संतुलन आता है। तब हम भोग में नहीं, उपयोग में जीते हैं।",
+            focus: "सुख की चाहत जीवन की है, सुविधा का साधन शरीर है। जीवन की समझ सुख की समझ के लिए आधार है।",
+            questions: [
+                "सबमें सुख की चाहत समान है, सब में सुख की चाहत का स्रोत (जीवन) समान है, क्या सुख पाने का तरीका भी समान है?",
+                "अगली बार हम सुख की समझ (सुख क्या है?) पर बात करेंगे।"
+            ]
+        }
+    ];
+
+    let currentCardIndex = 0;
+    const totalCards = cardData.length;
+    const cardContentElement = document.getElementById('card-content');
+    const cardIndicatorElement = document.getElementById('card-indicator');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    // Function to render the current card
+    function renderCard() {
+        // Apply exit animation before changing content
+        cardContentElement.classList.remove('card-enter-active');
+        cardContentElement.classList.add('card-enter');
+
+        setTimeout(() => {
+            const card = cardData[currentCardIndex];
+            let focusHtml = '';
+
+            if (typeof card.focus === 'string') {
+                focusHtml = `
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 shadow-md">
+                        <h2 class="text-xl text-blue-800 font-extrabold">${card.focus}</h2>
+                    </div>
+                `;
+            } else if (card.focus && card.focus.type === 'comparison') {
+                // Side-by-Side Comparison (Table Style)
+                focusHtml = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        ${card.focus.items.map(item => `
+                            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 shadow-md">
+                                <h3 class="text-lg font-bold text-blue-800 mb-3 border-b border-blue-300 pb-2">${item.label}</h3>
+                                <ul class="list-none space-y-2 text-sm text-gray-700">
+                                    ${item.details.map(detail => `
+                                        <li class="flex items-start">
+                                            <span class="text-blue-600 mr-2 flex-shrink-0 mt-1">
+                                                <!-- Custom Bullet Point Icon -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
+                                            </span>
+                                            <span>${detail}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                focusHtml = `
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 shadow-md">
+                        <h2 class="text-xl text-blue-800 font-extrabold">${card.focus}</h2>
+                    </div>
+                `;
+            }
+
+            let html = `
+                <h1 class="text-3xl font-bold mb-4 text-gray-800">${card.title}</h1>
+                <p class="text-lg text-gray-600 mb-4 leading-relaxed">${card.content}</p>
+                ${focusHtml}
+            `;
+
+            if (card.questions && card.questions.length > 0) {
+                card.questions.forEach(q => {
+                    html += `
+                        <div class="reflection-question text-gray-700">
+                            ${q}
+                        </div>
+                    `;
+                });
+            }
+
+            cardContentElement.innerHTML = html;
+
+            // Update indicator
+            cardIndicatorElement.textContent = `${currentCardIndex + 1}/${totalCards}`;
+
+            // Update button states
+            prevBtn.disabled = currentCardIndex === 0;
+            nextBtn.disabled = currentCardIndex === totalCards - 1;
+
+            // Apply entry animation after changing content
+            cardContentElement.classList.remove('card-enter');
+            cardContentElement.classList.add('card-enter-active');
+        }, 300); // Wait for the transition duration
+    }
+
+    // Function to move to the next card
+    function nextCard() {
+        if (currentCardIndex < totalCards - 1) {
+            currentCardIndex++;
+            renderCard();
+        }
+    }
+
+    // Function to move to the previous card
+    function prevCard() {
+        if (currentCardIndex > 0) {
+            currentCardIndex--;
+            renderCard();
+        }
+    }
+
+    // Initial render
+    window.onload = renderCard;
+
+</script>
+
+</body>
+</html>
