@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>सुख और दुःख की परिभाषा</title>
+    <!-- Tailwind CSS CDN --><script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .header-link {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card-content h1 {
+            color: #1e40af; /* Blue title */
+            border-bottom: 2px solid #93c5fd;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .card-content h2 {
+            color: #4b5563; /* Gray subtitle */
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        .reflection-question {
+            background-color: #eff6ff; /* Light blue for questions */
+            border-left: 4px solid #3b82f6;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+        .card-enter {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        .card-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+<a href="index.html" class="header-link">← सूचकांक पर वापस</a>
+
+<div class="max-w-xl w-full">
+    <!-- Main Card Container --><div id="card-container" class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 min-h-[400px] flex flex-col justify-between">
+        <div id="card-content" class="card-enter">
+            <!-- Content will be injected here --></div>
+
+        <!-- Navigation and Indicator --><div class="mt-8 pt-4 border-t border-gray-200 flex justify-between items-center">
+            <button id="prev-btn" onclick="prevCard()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg shadow hover:bg-gray-400 disabled:opacity-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+                &larr; पिछला
+            </button>
+            <span id="card-indicator" class="text-sm font-medium text-gray-600">
+                1/14
+            </span>
+            <button id="next-btn" onclick="nextCard()" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 disabled:opacity-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                अगला &rarr;
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Data for "सुख और दुःख की परिभाषा"
+    const cardData = [
+        {
+            title: "अब तक की बात",
+            content: "हर मानव, चाहे किसी भी देश, धर्म, या परिस्थिति का हो, सुखी होना चाहता है। यह चाहना ‘शरीर’ की नहीं, बल्कि ‘जीवन (मैं)’ की है। शरीर और जीवन मिलकर मानव का संयुक्त स्वरूप हैं — निरंतर सुख की आकांक्षा का स्रोत जीवन में है।",
+            focus: "यदि चाहत और चाहने वाला समान हैं, तो चाहना पूरी करने का तरीका भी सबके लिए एक होना चाहिए।",
+            questions: [
+                "क्या आप किसी ऐसे को जानते हैं जो कभी दुखी नहीं होते हैं?",
+                "सभी सुख को अलग अलग तरीके से देखते हैं, क्या सभी सुख को एक जैसे देख सकते हैं?"
+            ]
+        },
+        {
+            title: "दुःख क्या है — क्या यह वास्तविकता है या कुछ और?",
+            content: "दुःख कोई वास्तविकता नहीं, बल्कि मेरे भाव और विचारों की विरोधाभासी स्थिति है। जब मैं वास्तविकता को जैसा है, वैसा नहीं स्वीकार पाता, तो वही अस्वीकृति मेरे दुख का कारण बनता है।",
+            focus: "अस्वीकृति = दुःख, स्वीकृति = सुख। दुःख 'नियम का विरोध' है — अस्तित्व नियमपूर्ण है, और विरोध करने पर दुख अनिवार्य होता है।",
+            questions: [
+                "जब कोई बात स्वीकार नहीं होती, तो मेरे अंदर कैसा लगता है?",
+                "मैं वास्तविकता को जैसा है वैसा ही क्यूँ नहीं स्वीकार पाता हूँ?"
+            ]
+        },
+        {
+            title: "दुःख = समझ की कमी का संकेत",
+            content: "मैं अस्तित्व में नियम का विरोध नहीं करना चाहता पर समझ की कमी के कारण ऐसा हो जाता है। इसलिए दुख बताता है कि ‘मैं’ की समझ में कोई अधूरापन है। यदि यह संकेत न मिले, तो विकास कैसे होगा?",
+            focus: "दुःख विकास के लिए एक आवश्यक सहायक सूचना है, जो हमें अपनी समझ की कमी की ओर इंगित करता है।",
+            questions: [
+                "यदि हर बार दुखी होने पर मेरा ध्यान समझ में कमी की ओर जाने लगे तो इस से मुझमें क्या परिवर्तन आएगा?",
+                "समझ में कमी को पूरा करने की मेहनत करना किसकी जिम्मेदारी है?"
+            ]
+        },
+        {
+            title: "दुःख के मूल कारण — भ्रम और अस्वीकृति",
+            content: "दुःख के कुछ मूल कारण हैं, जो हमारी समझ और स्वीकृति की कमी से जुड़े हैं।",
+            focus: "भ्रम (मैं कौन हूँ नहीं जानना), अस्वीकृति (वास्तविकता को न स्वीकारना), सुविधा से सुख की तलाश, समान से सम्मान की तलाश, और अक्षमता (भाव-विचार को नियंत्रित न कर पाना)।",
+            questions: [
+                "मेरी स्वयं को लेकर समझ में कहाँ कहाँ कमी है क्या इसे मैं एक जगह लिख कर देखा हूँ?",
+                "मैं दूसरों के अपने प्रति व्यवहार को स्वीकार नहीं कर पाता हूँ, इसके पीछे क्या कारण है?"
+            ]
+        },
+        {
+            title: "सुख का वास्तविक स्वरूप — स्वीकृति और समाधान",
+            content: "सुख ‘मैं’ की वह स्थिति है जब मेरे भीतर कोई विरोधाभास नहीं होता। जब विचार और भाव में तालमेल होता है — वही स्थिति सुख है।",
+            focus: "“अस्तित्व को, जैसा है, वैसा समझ लेना और स्वीकार लेना ही सुख है।” निरंतर सुख का स्वरूप: “समाधान ही सुख है।”",
+            questions: [
+                "क्या अस्तित्व को जानने का प्रयास किया जा सकता है?",
+                "कभी कभी मेरे भाव और विचार कुछ समय के लिए तालमेल में होते हैं, ऐसी स्थिति क्यूँ बदल जाती है?"
+            ]
+        },
+        {
+            title: "स्वीकृति ही सुख — विरोध ही दुख",
+            content: "अस्तित्व नियमपूर्ण व्यवस्था है। जब मैं इस निरंतर व्यवस्था को समझता हूँ, इसके प्रति मेरी स्वीकृति होती है, तो मेरा आचरण इसके अनुरूप होता है। ऐसे आचरण का फल सुख है।",
+            focus: "सूत्र: स्वीकृति = सुख | अस्वीकृति = दुःख",
+            questions: [
+                "क्या मैं अस्तित्व के नियमों के अनुरुप आचरण करना चाहता हूँ?",
+                "क्या वाकई इतनी सी बात अब तक हमको समझ नहीं आई थी?"
+            ]
+        },
+        {
+            title: "सुख और सुविधा का अंतर",
+            content: "सुख और सुविधा अक्सर एक-दूसरे के लिए भ्रमित होते हैं, लेकिन उनकी प्रकृति, पूर्ति का तरीका, सीमा और स्थायित्व में गहरा अंतर है।",
+            focus: {
+                type: "comparison",
+                items: [
+                    { label: "सुविधा (शरीर की)", details: ["प्रकृति: भौतिक, अस्थायी", "पूरा करने का तरीका: धन से", "सीमा: सीमित, मात्रात्मक", "स्थायित्व: क्षणिक"] },
+                    { label: "सुख (जीवन का)", details: ["प्रकृति: भावनात्मक, निरंतर", "पूरा करने का तरीका: समझ से", "सीमा: असीम, गुणात्मक", "स्थायित्व: स्थायी"] }
+                ]
+            },
+            questions: [
+                "क्या पूरे विश्व में यह परेशानी देखने को मिलती है कि सुविधा को ही सुख समझ लिया गया है?",
+                "क्या सुविधा बढ़ने के बाद भी शांति की कमी महसूस होती है?"
+            ]
+        },
+        {
+            title: "सुख का वैचारिक स्वरूप — भीतर का संगीत",
+            content: "सुख ‘मैं’ की वह स्थिति है जब मन, वृत्ति, चित्त, बुद्धि और आत्मा — एक ताल में हों। जब भीतर का विरोध समाप्त हो जाता है, तो जीवन संगीत बन जाता है।",
+            focus: "स्व-नियंत्रण = स्वतंत्रता। जब मेरे भाव और विचार मेरे नियंत्रण में हों, तब मेरी खुशी किसी बाहरी चीज़ पर निर्भर नहीं रहती।",
+            questions: [
+                "क्या आपके जीवन में ऐसे पल हैं जब भीतर पूरा संतुलन महसूस हुआ?",
+                "क्या स्वतंत्रता का अर्थ यह हो सकता है कि “मैं अपने भीतर के भावों का स्वामी बन जाऊँ”?"
+            ]
+        },
+        {
+            title: "समझ — सुख की जड़ और दुःख का अंत",
+            content: "‘मैं’ की सबसे बड़ी आवश्यकता है — समझना। मेरे भीतर समझने की असीम क्षमता है, और वही मेरी तृप्ति का स्रोत है। जब मैं वास्तविकता को जैसा है वैसा समझ लेता हूँ, तो भीतर विरोध नहीं रहता — दुःख समाप्त होता है, और सुख की निरंतरता शुरू होती है।",
+            focus: "समझना ही दुःख का अंत और निरंतर सुख का आधार है।",
+            questions: [
+                "क्या हम जीवन को “जानने” से ज़्यादा “मानने” के स्तर पर जीते हैं?",
+                "क्या समझ ही असली स्थिरता नहीं देती?"
+            ]
+        },
+        {
+            title: "भ्रम का अंत — जिंदा रहने का सामान, जीने के काम नहीं आता",
+            content: "मनुष्य भ्रमवश दो दिशाओं में दौड़ता है: सामान से सम्मान पाने की चाह और सुविधा से सुख पाने की चाह। लेकिन जैसे ही वह देखता है कि “जिंदा रहने का सामान, जीने के काम नहीं आता,” तब भ्रम समाप्त हो जाता है।",
+            focus: "भौतिक चीजें 'जिंदा रहने' के लिए आवश्यक हो सकती हैं, लेकिन वे 'जीने' (सुखी होने) की आवश्यकताओं को पूरा नहीं कर सकतीं।",
+            questions: [
+                "क्या आपने महसूस किया है कि किसी भौतिक चीज़ से मिली खुशी टिकती नहीं?",
+                "क्या यह पहचान हमारे जीवन की दिशा बदल सकती है?"
+            ]
+        },
+        {
+            title: "निरंतर सुख की यात्रा — समझ से तृप्ति तक",
+            content: "‘मैं’ की आवश्यकता असीम है, और उस असीमता की पूर्ति समझ के द्वारा ही संभव है। जब मैं समझ जाता हूँ कि “क्या है, मैं क्या हूँ, और क्या करना है,” तब मैं अपनी महिमा को पहचानता हूँ।",
+            focus: "आत्म-प्रकाश ही तृप्ति है — जहाँ खोज समाप्त नहीं होती, बल्कि पूर्ण होती है।",
+            questions: [
+                "क्या आपने कभी ऐसा अनुभव किया जहाँ भीतर से स्पष्टता आने पर सब सहज हो गया?",
+                "क्या यही आत्म-बोध तृप्ति की शुरुआत है?"
+            ]
+        },
+        {
+            title: "समाधान और उपयोगिता — सुख का सामाजिक आयाम",
+            content: "जब मैं स्वयं में समाधान संपन्न होता हूँ, तो मेरा सम्मान इस बात से आता है कि मैं दूसरों के सुख में अपनी उपयोगिता सिद्ध कर पा रहा हूँ। यह ही “मानव चेतना” की पहचान है — जहाँ मैं दूसरों से तुलना नहीं करता, बल्कि उनके साथ मिलकर विकास देखता हूँ।",
+            focus: "सच्चा सम्मान 'उपयोगिता' से आता है, न कि 'स्थिति' से। मानव चेतना में दूसरों के साथ सहयोग और विकास पर ध्यान केंद्रित होता है।",
+            questions: [
+                "क्या सच्चा सम्मान “उपयोगिता” से आता है, या “स्थिति” से?",
+                "क्या हम अपने काम और संबंधों में उपयोगिता देख पाते हैं?"
+            ]
+        },
+        {
+            title: "सूत्र — सुख-दुःख की जड़ें और दिशा",
+            content: "यह कार्ड सुख-दुःख की जड़ों और हमारी विकास की दिशा को सारांशित करता है।",
+            focus: "मूल आवश्यकता: जीवन की ज्ञान और समझ। मूल नियम: स्वीकृति = सुख | अस्वीकृति = दुःख। ज्ञान का प्रभाव: वास्तविकता को समझना = सुख की निरंतरता। चेतना का रूपांतरण: जीव चेतना से मानव चेतना तक।",
+            questions: [
+                "क्या यह संभव है कि मैं दुख को अंत मानने की बजाय “समझ की प्रक्रिया” मानूँ?",
+                "क्या सुख-दुःख दोनों मुझे अपने विकास की दिशा दिखा सकते हैं?"
+            ]
+        },
+        {
+            title: "समापन कार्ड: सुख — समझ की स्थिति है, परिस्थिति की नहीं",
+            content: "दुःख वहाँ है जहाँ अस्वीकृति है। सुख वहाँ है जहाँ समझ और स्वीकृति है। न तो दुख कोई सजा है, न सुख कोई इनाम — दोनों ही संकेत हैं — कि मैं जीवन को कितना समझ पाया हूँ।",
+            focus: "“सुख बाहर नहीं — भीतर के संतुलन, समझ और स्वीकृति में है।”",
+            questions: []
+        }
+    ];
+
+    let currentCardIndex = 0;
+    const totalCards = cardData.length;
+    const cardContentElement = document.getElementById('card-content');
+    const cardIndicatorElement = document.getElementById('card-indicator');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    // Function to render the current card
+    function renderCard() {
+        // Apply exit animation before changing content
+        cardContentElement.classList.remove('card-enter-active');
+        cardContentElement.classList.add('card-enter');
+
+        setTimeout(() => {
+            const card = cardData[currentCardIndex];
+            let focusHtml = '';
+
+            if (typeof card.focus === 'string') {
+                focusHtml = `
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 shadow-md">
+                        <h2 class="text-xl text-blue-800 font-extrabold">${card.focus}</h2>
+                    </div>
+                `;
+            } else if (card.focus && card.focus.type === 'comparison') {
+                // Side-by-Side Comparison (Table Style)
+                focusHtml = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        ${card.focus.items.map(item => `
+                            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 shadow-md">
+                                <h3 class="text-lg font-bold text-blue-800 mb-3 border-b border-blue-300 pb-2">${item.label}</h3>
+                                <ul class="list-none space-y-2 text-sm text-gray-700">
+                                    ${item.details.map(detail => `
+                                        <li class="flex items-start">
+                                            <span class="text-blue-600 mr-2 flex-shrink-0 mt-1">
+                                                <!-- Custom Bullet Point Icon --><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
+                                            </span>
+                                            <span>${detail}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                focusHtml = `
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 shadow-md">
+                        <h2 class="text-xl text-blue-800 font-extrabold">${card.focus}</h2>
+                    </div>
+                `;
+            }
+
+            let html = `
+                <h1 class="text-3xl font-bold mb-4 text-gray-800">${card.title}</h1>
+                <p class="text-lg text-gray-600 mb-4 leading-relaxed">${card.content}</p>
+                ${focusHtml}
+            `;
+
+            if (card.questions && card.questions.length > 0) {
+                card.questions.forEach(q => {
+                    html += `
+                        <div class="reflection-question text-gray-700">
+                            ${q}
+                        </div>
+                    `;
+                });
+            }
+
+            cardContentElement.innerHTML = html;
+
+            // Update indicator
+            cardIndicatorElement.textContent = `${currentCardIndex + 1}/${totalCards}`;
+
+            // Update button states
+            prevBtn.disabled = currentCardIndex === 0;
+            nextBtn.disabled = currentCardIndex === totalCards - 1;
+
+            // Apply entry animation after changing content
+            cardContentElement.classList.remove('card-enter');
+            cardContentElement.classList.add('card-enter-active');
+        }, 300); // Wait for the transition duration
+    }
+
+    // Function to move to the next card
+    function nextCard() {
+        if (currentCardIndex < totalCards - 1) {
+            currentCardIndex++;
+            renderCard();
+        }
+    }
+
+    // Function to move to the previous card
+    function prevCard() {
+        if (currentCardIndex > 0) {
+            currentCardIndex--;
+            renderCard();
+        }
+    }
+
+    // Initial render
+    window.onload = renderCard;
+
+</script>
+
+</body>
+</html>
